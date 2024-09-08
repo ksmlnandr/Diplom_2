@@ -116,16 +116,16 @@ public class UserRegisterTest {
 
     @Step("Получено ожидаемое тело ответа при попытке регистрации пользователя с некорректными данными")
     public void checkInvalidResponseBody(Response response, UserRegisterBody body) {
-        if(body.getEmail().equals(notNullValue())
-                && body.getPassword().equals(notNullValue())
-                && body.getName().equals(notNullValue())) {
+        if (!(body.getEmail() == null)
+                && !(body.getPassword() == null)
+                && !(body.getName() == null)) {
             response.then().assertThat()
                     .body("success", equalTo(false))
                     .body("message", equalTo("User already exists"));
         } else
-            if (body.getEmail().equals(null)
-                || body.getPassword().equals(null)
-                || body.getName().equals(null)) {
+            if (body.getEmail() == null
+                || body.getPassword() == null
+                || body.getName() == null) {
             response.then().assertThat()
                     .body("success", equalTo(false))
                     .body("message", equalTo("Email, password and name are required fields"));
