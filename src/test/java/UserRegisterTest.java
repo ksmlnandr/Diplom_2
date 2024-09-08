@@ -21,7 +21,7 @@ public class UserRegisterTest {
     private Response response;
     private UserRegisterBody body;
     private List<UserRegisterBody> regBodies = new ArrayList<>();
-    private void addRegBodies() {
+    public UserRegisterTest() {
         regBodies.add(new UserRegisterBody("new@user.ru", "12345", "New User"));
         regBodies.add(new UserRegisterBody("existing@user.ru", "123456", "Existing User"));
         regBodies.add(new UserRegisterBody(null, "123456", "NoEmail User"));
