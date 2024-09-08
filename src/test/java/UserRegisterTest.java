@@ -8,6 +8,9 @@ import org.junit.Test;
 import settings.RestClient;
 import settings.UserRegisterBody;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.hamcrest.Matchers.*;
 
 
@@ -15,8 +18,17 @@ import static io.restassured.RestAssured.given;
 
 public class UserRegisterTest {
     private final RestClient restClient = new RestClient();
-    private UserRegisterBody body;
     private Response response;
+    private UserRegisterBody body;
+    private List<UserRegisterBody> regBodies = new ArrayList<>();
+    private void addRegBodies() {
+        regBodies.add(new UserRegisterBody("new@user.ru", "12345", "New User"));
+        regBodies.add(new UserRegisterBody("existing@user.ru", "123456", "Existing User"));
+        regBodies.add(new UserRegisterBody(null, "123456", "NoEmail User"));
+        regBodies.add(new UserRegisterBody("nopassword@user.ru", null, "NoPassword User"));
+        regBodies.add(new UserRegisterBody("noname@user.ru", "123456", null));
+
+    }
 
     @Before
     public void setUp() {
@@ -26,7 +38,7 @@ public class UserRegisterTest {
     @Test
     @DisplayName("Тест регистрации нового пользователя")
     public void newUserRegisterTest() {
-        body = setRequestBody("новый пользователь");
+        body = regBodies.get(0);
         response = getUserRegister(body);
         checkValidResponseBody(response);
         checkStatusCode(response, 200);
@@ -35,7 +47,7 @@ public class UserRegisterTest {
     @Test
     @DisplayName("Тест регистрации существующего пользователя")
     public void existingUserRegisterTest() {
-        body = setRequestBody("существующий пользователь");
+        body = regBodies.get(1);
         response = getUserRegister(body);
         checkInvalidResponseBody(response, body);
         checkStatusCode(response, 403);
@@ -44,7 +56,7 @@ public class UserRegisterTest {
     @Test
     @DisplayName("Тест регистрации нового пользователя без email")
     public void noEmailRegisterTest() {
-        body = setRequestBody("пользователь без email");
+        body = regBodies.get(2);
         response = getUserRegister(body);
         checkInvalidResponseBody(response, body);
         checkStatusCode(response, 403);
@@ -53,7 +65,7 @@ public class UserRegisterTest {
     @Test
     @DisplayName("Тест регистрации нового пользователя без пароля")
     public void noPasswordRegisterTest() {
-        body = setRequestBody("пользователь без пароля");
+        body = regBodies.get(3);
         response = getUserRegister(body);
         checkInvalidResponseBody(response, body);
         checkStatusCode(response, 403);
@@ -62,7 +74,7 @@ public class UserRegisterTest {
     @Test
     @DisplayName("Тест регистрации нового пользователя без без имени")
     public void noNameRegisterTest() {
-        body = setRequestBody("пользователь без имени");
+        body = regBodies.get(4);
         response = getUserRegister(body);
         checkInvalidResponseBody(response, body);
         checkStatusCode(response, 403);
@@ -75,30 +87,13 @@ public class UserRegisterTest {
     }
 
 
-    @Step("Создано тело запроса")
-    public UserRegisterBody setRequestBody(String bodyOption){
-        body = null;
-        if(bodyOption == "новый пользователь") {
-            body = new UserRegisterBody("new@user.ru", "12345", "New User");
-        } else if (bodyOption == "существующий пользователь") {
-            body = new UserRegisterBody("existing@user.ru", "123456", "Existing User");
-        } else if (bodyOption == "пользователь без email") {
-            body = new UserRegisterBody(null, "123456", "NoEmail User");
-        } else if (bodyOption == "пользователь без пароля") {
-            body = new UserRegisterBody("nopassword@user.ru", null, "NoPassword User");
-        } else if (bodyOption == "пользователь без имени") {
-            body = new UserRegisterBody("noname@user.ru", "123456", null);
-        }
-        return body;
-    }
-
     @Step("Вызван метод регистрации нового пользователя")
-    public Response getUserRegister(UserRegisterBody body) {
+    public Response getUserRegister(UserRegisterBody regBody) {
         response =
                 given()
                         .header("Content-type", "application/json")
                         .and()
-                        .body(body)
+                        .body(regBody)
                         .when()
                         .post(restClient.getUserRegister());
         return response;
@@ -116,7 +111,7 @@ public class UserRegisterTest {
                 .body("user.email", equalTo(body.getEmail()))
                 .body("user.name", equalTo(body.getName()))
                 .body("accessToken", contains("Bearer"))
-                .body("refreshToken", equalTo(String.class));
+                .body("refreshToken", instanceOf(String.class));
     }
 
     @Step("Получено ожидаемое тело ответа при попытке регистрации пользователя с некорректными данными")
