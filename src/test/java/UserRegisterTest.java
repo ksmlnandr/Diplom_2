@@ -6,7 +6,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import settings.RestClient;
+import settings.UserDeleteApi;
 import settings.UserRegisterBody;
+import settings.UserResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +22,10 @@ public class UserRegisterTest {
     private final RestClient restClient = new RestClient();
     private Response response;
     private UserRegisterBody body;
+    private UserResponseBody responseBody;
+
+    private UserDeleteApi uda = new UserDeleteApi();
+    private String token;
     private List<UserRegisterBody> regBodies = new ArrayList<>();
     public UserRegisterTest() {
         regBodies.add(new UserRegisterBody("new@user.ru", "12345", "New User"));
@@ -83,7 +89,7 @@ public class UserRegisterTest {
 
     @After
     public void cleanUp() {
-        //дописать метод удаления данных пользователя
+        uda.cleanUp(token);
     }
 
 
@@ -112,6 +118,10 @@ public class UserRegisterTest {
                 .body("user.name", equalTo(body.getName()))
                 .body("accessToken", contains("Bearer"))
                 .body("refreshToken", instanceOf(String.class));
+
+        responseBody = response.body().as(UserResponseBody.class);
+        token = responseBody.getAccessToken();
+
     }
 
     @Step("Получено ожидаемое тело ответа при попытке регистрации пользователя с некорректными данными")
@@ -130,5 +140,6 @@ public class UserRegisterTest {
                     .body("success", equalTo(false))
                     .body("message", equalTo("Email, password and name are required fields"));
         }
+            token = null;
     }
 }
