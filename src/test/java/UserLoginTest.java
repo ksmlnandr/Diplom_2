@@ -92,7 +92,7 @@ public class UserLoginTest {
                 .body("success", equalTo(true))
                 .body("user.email", equalTo(loginBody.getEmail()))
                 .body("user.name", equalTo(regBody.getName()))
-                .body("accessToken", contains("Bearer"))
+                .body("accessToken", startsWith("Bearer"))
                 .body("refreshToken", instanceOf(String.class));
 
         responseBody = response.body().as(UserResponseBody.class);
