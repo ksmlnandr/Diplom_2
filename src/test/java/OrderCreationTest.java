@@ -8,6 +8,7 @@ import org.junit.Test;
 import settings.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
@@ -16,7 +17,7 @@ import static org.hamcrest.Matchers.*;
 public class OrderCreationTest {
     private RestClient restClient = new RestClient();
     private Response response;
-    private UserRegisterBody urb = new UserRegisterBody("new@user.ru", "12345", "New User");
+    private UserRegisterBody urb = new UserRegisterBody("new3@user.ru", "12345", "New User");
     private UserRegisterTest urt = new UserRegisterTest();
     private UserResponseBody responseBody;
     private UserDeleteApi uda = new UserDeleteApi();
@@ -42,7 +43,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа с авторизацией")
     public void createOrderWithAuthTest() {
         ocb = orderCreateBodies.get(0);
-        response = postCreateOrderWithAuth(ocb);
+        response = postCreateOrderWithAuth(ocb, accessToken);
         checkStatusCode(response, 200);
         checkValidResponseBodyWithAuth(response);
     }
@@ -59,7 +60,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа с ингредиентами")
     public void createOrderWithIngredientsTest() {
         ocb = orderCreateBodies.get(0);
-        response = postCreateOrderWithAuth(ocb);
+        response = postCreateOrderWithAuth(ocb, accessToken);
         checkStatusCode(response, 200);
         checkValidResponseBodyWithAuth(response);
     }
@@ -68,7 +69,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа без ингредиентов")
     public void createOrderWithoutIngredientsTest() {
         ocb = orderCreateBodies.get(1);
-        response = postCreateOrderWithAuth(ocb);
+        response = postCreateOrderWithAuth(ocb, accessToken);
         checkStatusCode(response, 400);
         checkInvalidResponseBodyWithoutIngredients(response);
     }
@@ -77,7 +78,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа с неверным хэшем ингредиентов")
     public void createOrderWithInvalidIngredientsTest() {
         ocb = orderCreateBodies.get(2);
-        response = postCreateOrderWithAuth(ocb);
+        response = postCreateOrderWithAuth(ocb, accessToken);
         checkStatusCode(response, 500);
     }
 
@@ -87,10 +88,11 @@ public class OrderCreationTest {
     }
 
     @Step("Вызван метод создания заказа с авторизацией")
-    public Response postCreateOrderWithAuth(OrderCreateBody ocb) {
+    public Response postCreateOrderWithAuth(OrderCreateBody ocb, String accessToken) {
         response =
                 given()
                         .header("Content-type", "application/json")
+                        .and()
                         .header("Authorization", accessToken)
                         .and()
                         .body(ocb)
@@ -99,7 +101,7 @@ public class OrderCreationTest {
         return response;
     }
 
-    @Step("Вызван метод создания заказа с авторизацией")
+    @Step("Вызван метод создания заказа без авторизации")
     public Response postCreateOrderWithoutAuth(OrderCreateBody ocb) {
         response =
                 given()
@@ -122,18 +124,18 @@ public class OrderCreationTest {
         response.then().assertThat()
                 .body("success", equalTo(true))
                 .body("name", instanceOf(String.class))
-                .body("order.ingredients._id", instanceOf(String.class))
-                .body("order.ingredients.name", instanceOf(String.class))
-                .body("order.ingredients.type", instanceOf(String.class))
-                .body("order.ingredients.proteins", instanceOf(Integer.class))
-                .body("order.ingredients.fat", instanceOf(Integer.class))
-                .body("order.ingredients.carbohydrates", instanceOf(Integer.class))
-                .body("order.ingredients.calories", instanceOf(Integer.class))
-                .body("order.ingredients.price", instanceOf(Integer.class))
-                .body("order.ingredients.image", instanceOf(String.class))
-                .body("order.ingredients.image_mobile", instanceOf(String.class))
-                .body("order.ingredients.image_large", instanceOf(String.class))
-                .body("order.ingredients.__v", instanceOf(Integer.class))
+                .body("order.ingredients._id", instanceOf(ArrayList.class))
+                .body("order.ingredients.name", instanceOf(ArrayList.class))
+                .body("order.ingredients.type", instanceOf(ArrayList.class))
+                .body("order.ingredients.proteins", instanceOf(ArrayList.class))
+                .body("order.ingredients.fat", instanceOf(ArrayList.class))
+                .body("order.ingredients.carbohydrates", instanceOf(ArrayList.class))
+                .body("order.ingredients.calories", instanceOf(ArrayList.class))
+                .body("order.ingredients.price", instanceOf(ArrayList.class))
+                .body("order.ingredients.image", instanceOf(ArrayList.class))
+                .body("order.ingredients.image_mobile", instanceOf(ArrayList.class))
+                .body("order.ingredients.image_large", instanceOf(ArrayList.class))
+                .body("order.ingredients.__v", instanceOf(ArrayList.class))
                 .body("order._id", instanceOf(String.class))
                 .body("order.owner.name", instanceOf(String.class))
                 .body("order.owner.email", instanceOf(String.class))
