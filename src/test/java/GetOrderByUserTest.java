@@ -11,13 +11,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.instanceOf;
+import static org.hamcrest.Matchers.*;
 
 public class GetOrderByUserTest {
     private RestClient restClient = new RestClient();
     private Response response;
-    private UserRegisterBody urb = new UserRegisterBody("new@user.ru", "12345", "New User");
+    private UserRegisterBody urb = new UserRegisterBody("new4@user.ru", "12345", "New User");
     private UserRegisterTest urt = new UserRegisterTest();
     private UserResponseBody responseBody;
     private UserDeleteApi uda = new UserDeleteApi();
@@ -39,8 +38,8 @@ public class GetOrderByUserTest {
         responseBody = response.body().as(UserResponseBody.class);
         accessToken = responseBody.getAccessToken();
 
-        oct.postCreateOrderWithAuth(orderCreateBodies.get(0));
-        oct.postCreateOrderWithAuth(orderCreateBodies.get(1));
+        oct.postCreateOrderWithAuth(orderCreateBodies.get(0), accessToken);
+        oct.postCreateOrderWithAuth(orderCreateBodies.get(1), accessToken);
     }
 
     @Test
@@ -68,6 +67,7 @@ public class GetOrderByUserTest {
     public Response getOrderListByAuthUser() {
         response =
                 given()
+                        .header("Content-type", "application/json")
                         .header("Authorization", accessToken)
                         .when()
                         .get(restClient.getOrdersEndpoint());
@@ -78,7 +78,7 @@ public class GetOrderByUserTest {
     public Response getOrderListByNoAuth() {
         response =
                 given()
-                        .header("Authorization", null)
+                        .header("Content-type", "application/json")
                         .when()
                         .get(restClient.getOrdersEndpoint());
         return response;
@@ -93,12 +93,12 @@ public class GetOrderByUserTest {
     public void checkValidResponseBody(Response response) {
         response.then().assertThat()
                 .body("success", equalTo(true))
-                .body("orders.ingredients", instanceOf(String[].class))
-                .body("orders._id", instanceOf(String.class))
-                .body("orders.status", instanceOf(String.class))
-                .body("orders.createdAt", instanceOf(String.class))
-                .body("orders.updatedAt", instanceOf(String.class))
-                .body("orders.number", instanceOf(Integer.class))
+                .body("orders.ingredients", instanceOf(ArrayList.class))
+                .body("orders._id", instanceOf(ArrayList.class))
+                .body("orders.status", instanceOf(ArrayList.class))
+                .body("orders.createdAt", instanceOf(ArrayList.class))
+                .body("orders.updatedAt", instanceOf(ArrayList.class))
+                .body("orders.number", instanceOf(ArrayList.class))
                 .body("total", instanceOf(Integer.class))
                 .body("totalToday", instanceOf(Integer.class));
     }
