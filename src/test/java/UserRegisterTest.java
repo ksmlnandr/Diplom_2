@@ -28,12 +28,11 @@ public class UserRegisterTest {
     private String token;
     private List<UserRegisterBody> regBodies = new ArrayList<>();
     public UserRegisterTest() {
-        regBodies.add(new UserRegisterBody("new@user.ru", "12345", "New User"));
-        regBodies.add(new UserRegisterBody("existing@user.ru", "123456", "Existing User"));
+        regBodies.add(new UserRegisterBody("new21@user.ru", "12345", "New User"));
+        regBodies.add(new UserRegisterBody("existing1@user.ru", "12345", "Existing User"));
         regBodies.add(new UserRegisterBody(null, "123456", "NoEmail User"));
         regBodies.add(new UserRegisterBody("nopassword@user.ru", null, "NoPassword User"));
         regBodies.add(new UserRegisterBody("noname@user.ru", "123456", null));
-
     }
 
     @Before
@@ -53,6 +52,7 @@ public class UserRegisterTest {
     @Test
     @DisplayName("Тест регистрации существующего пользователя")
     public void existingUserRegisterTest() {
+        body = regBodies.get(1);
         body = regBodies.get(1);
         response = getUserRegister(body);
         checkInvalidResponseBody(response, body);
@@ -116,7 +116,7 @@ public class UserRegisterTest {
                 .body("success", equalTo(true))
                 .body("user.email", equalTo(body.getEmail()))
                 .body("user.name", equalTo(body.getName()))
-                .body("accessToken", contains("Bearer"))
+                .body("accessToken", startsWith("Bearer"))
                 .body("refreshToken", instanceOf(String.class));
 
         responseBody = response.body().as(UserResponseBody.class);

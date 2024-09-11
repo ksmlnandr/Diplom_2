@@ -6,7 +6,7 @@ public class UserResponseBody {
     private boolean success;
     private String accessToken;
     private String refreshToken;
-    private List<User> user;
+    private User user;
 
     public boolean isSuccess() {
         return success;
@@ -32,11 +32,11 @@ public class UserResponseBody {
         this.refreshToken = refreshToken;
     }
 
-    public List<User> getUser() {
+    public User getUser() {
         return user;
     }
 
-    public void setUser(List<User> user) {
+    public void setUser(User user) {
         this.user = user;
     }
 }
