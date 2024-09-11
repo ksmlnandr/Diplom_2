@@ -1,0 +1,180 @@
+{
+  "uid" : "ee3938e385f05307",
+  "name" : "Тест получения списка заказов пользователя, если пользователь авторизован",
+  "fullName" : "GetOrderByUserTest.getOrderListByAuthUserTest",
+  "historyId" : "2051a9c24c6d887d2b8d05b7420c99cc",
+  "time" : {
+    "start" : 1726078947924,
+    "stop" : 1726078953666,
+    "duration" : 5742
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Вызван метод регистрации нового пользователя",
+      "time" : {
+        "start" : 1726078947925,
+        "stop" : 1726078948341,
+        "duration" : 416
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "regBody",
+        "value" : "settings.UserRegisterBody@696a6506"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Вызван метод создания заказа с авторизацией",
+      "time" : {
+        "start" : 1726078948352,
+        "stop" : 1726078950268,
+        "duration" : 1916
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "ocb",
+        "value" : "settings.OrderCreateBody@1c4a8c93"
+      }, {
+        "name" : "accessToken",
+        "value" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTFkZmU0OWVkMjgwMDAxYjRiNWQ4MyIsImlhdCI6MTcyNjA3ODk0OCwiZXhwIjoxNzI2MDgwMTQ4fQ.x8d6U9S4cFZ5Vp9S7Af7VfqnfL-pdjX4rFol8ZNI_vE"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Вызван метод создания заказа с авторизацией",
+      "time" : {
+        "start" : 1726078950269,
+        "stop" : 1726078952158,
+        "duration" : 1889
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "ocb",
+        "value" : "settings.OrderCreateBody@515b7335"
+      }, {
+        "name" : "accessToken",
+        "value" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZTFkZmU0OWVkMjgwMDAxYjRiNWQ4MyIsImlhdCI6MTcyNjA3ODk0OCwiZXhwIjoxNzI2MDgwMTQ4fQ.x8d6U9S4cFZ5Vp9S7Af7VfqnfL-pdjX4rFol8ZNI_vE"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Вызван метод получения списка заказов авторизованного пользователя",
+      "time" : {
+        "start" : 1726078952159,
+        "stop" : 1726078952649,
+        "duration" : 490
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "hasContent" : false,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "В ответе получен ожидаемый статус-код",
+      "time" : {
+        "start" : 1726078952650,
+        "stop" : 1726078952652,
+        "duration" : 2
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@331da721"
+      }, {
+        "name" : "statusCode",
+        "value" : "200"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "В ответе получено ожидаемое тело ответа при успешном получении списка заказов авторизованного пользователя",
+      "time" : {
+        "start" : 1726078952652,
+        "stop" : 1726078953007,
+        "duration" : 355
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@331da721"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : true,
+    "stepsCount" : 6,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : ""
+  }, {
+    "name" : "testClass",
+    "value" : "GetOrderByUserTest"
+  }, {
+    "name" : "testMethod",
+    "value" : "getOrderListByAuthUserTest"
+  }, {
+    "name" : "suite",
+    "value" : "GetOrderByUserTest"
+  }, {
+    "name" : "host",
+    "value" : "MacBook-Pro-Andrej.local"
+  }, {
+    "name" : "thread",
+    "value" : "25870@MacBook-Pro-Andrej.local.main(1)"
+  }, {
+    "name" : "framework",
+    "value" : "junit4"
+  }, {
+    "name" : "language",
+    "value" : "java"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "ee3938e385f05307.json",
+  "parameterValues" : [ ]
+}

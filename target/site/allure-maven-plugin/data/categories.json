@@ -1,0 +1,26 @@
+{
+  "uid" : "4b4757e66a1912dae1a509f688f20b0f",
+  "name" : "categories",
+  "children" : [ {
+    "name" : "Product defects",
+    "children" : [ {
+      "name" : "1 expectation failed.\nExpected status code <401> but was <200>.\n",
+      "children" : [ {
+        "name" : "Тест создания заказа без авторизации",
+        "uid" : "c990a8c079818bdd",
+        "parentUid" : "5c5b8d4f37e62d5e06845d2a3a1b3b9e",
+        "status" : "failed",
+        "time" : {
+          "start" : 1726078968363,
+          "stop" : 1726078970235,
+          "duration" : 1872
+        },
+        "flaky" : false,
+        "newFailed" : false,
+        "parameters" : [ ]
+      } ],
+      "uid" : "5c5b8d4f37e62d5e06845d2a3a1b3b9e"
+    } ],
+    "uid" : "8fb3a91ba5aaf9de24cc8a92edc82b5d"
+  } ]
+}
