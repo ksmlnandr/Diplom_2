@@ -42,7 +42,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа с авторизацией")
     public void createOrderWithAuthTest() {
         ocb = orderCreateBodies.get(0);
-        response = postCreateOrderWithAuthTest(ocb);
+        response = postCreateOrderWithAuth(ocb);
         checkStatusCode(response, 200);
         checkValidResponseBodyWithAuth(response);
     }
@@ -51,7 +51,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа без авторизации")
     public void createOrderWithoutAuthTest() {
         ocb = orderCreateBodies.get(0);
-        response = postCreateOrderWithoutAuthTest(ocb);
+        response = postCreateOrderWithoutAuth(ocb);
         checkStatusCode(response, 401);
     }
 
@@ -59,7 +59,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа с ингредиентами")
     public void createOrderWithIngredientsTest() {
         ocb = orderCreateBodies.get(0);
-        response = postCreateOrderWithAuthTest(ocb);
+        response = postCreateOrderWithAuth(ocb);
         checkStatusCode(response, 200);
         checkValidResponseBodyWithAuth(response);
     }
@@ -68,7 +68,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа без ингредиентов")
     public void createOrderWithoutIngredientsTest() {
         ocb = orderCreateBodies.get(1);
-        response = postCreateOrderWithAuthTest(ocb);
+        response = postCreateOrderWithAuth(ocb);
         checkStatusCode(response, 400);
         checkInvalidResponseBodyWithoutIngredients(response);
     }
@@ -77,7 +77,7 @@ public class OrderCreationTest {
     @DisplayName("Тест создания заказа с неверным хэшем ингредиентов")
     public void createOrderWithInvalidIngredientsTest() {
         ocb = orderCreateBodies.get(2);
-        response = postCreateOrderWithAuthTest(ocb);
+        response = postCreateOrderWithAuth(ocb);
         checkStatusCode(response, 500);
     }
 
@@ -87,7 +87,7 @@ public class OrderCreationTest {
     }
 
     @Step("Вызван метод создания заказа с авторизацией")
-    public Response postCreateOrderWithAuthTest(OrderCreateBody ocb) {
+    public Response postCreateOrderWithAuth(OrderCreateBody ocb) {
         response =
                 given()
                         .header("Content-type", "application/json")
@@ -100,7 +100,7 @@ public class OrderCreationTest {
     }
 
     @Step("Вызван метод создания заказа с авторизацией")
-    public Response postCreateOrderWithoutAuthTest(OrderCreateBody ocb) {
+    public Response postCreateOrderWithoutAuth(OrderCreateBody ocb) {
         response =
                 given()
                         .header("Content-type", "application/json")
@@ -149,13 +149,6 @@ public class OrderCreationTest {
 
     @Step("Получено ожидаемое тело ответа при попытке создания заказа без ингредиентов")
     public void checkInvalidResponseBodyWithoutIngredients(Response response) {
-        response.then().assertThat()
-                .body("success", equalTo(false))
-                .body("message", equalTo("Ingredient ids must be provided"));
-    }
-
-    @Step("Получено ожидаемое тело ответа при попытке создания заказа с неверным хэшем ингредиентов")
-    public void checkInvalidResponseBodyWithInvalidIngredients(Response response) {
         response.then().assertThat()
                 .body("success", equalTo(false))
                 .body("message", equalTo("Ingredient ids must be provided"));
