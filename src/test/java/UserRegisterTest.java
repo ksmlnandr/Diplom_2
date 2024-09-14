@@ -1,32 +1,23 @@
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import model.CommonMethods;
+import model.Steps;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import settings.RestClient;
-import settings.UserDeleteApi;
 import settings.UserRegisterBody;
-import settings.UserResponseBody;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.hamcrest.Matchers.*;
-
-
-import static io.restassured.RestAssured.given;
-
 public class UserRegisterTest {
-    private final RestClient restClient = new RestClient();
+    CommonMethods commonMethods = new CommonMethods();
+    Steps step = new Steps();
     private Response response;
     private UserRegisterBody body;
-    private UserResponseBody responseBody;
-
-    private UserDeleteApi uda = new UserDeleteApi();
-    private String token;
+    private String accessToken;
     private List<UserRegisterBody> regBodies = new ArrayList<>();
+
     public UserRegisterTest() {
         regBodies.add(new UserRegisterBody("new21@user.ru", "12345", "New User"));
         regBodies.add(new UserRegisterBody("existing1@user.ru", "12345", "Existing User"));
@@ -36,17 +27,19 @@ public class UserRegisterTest {
     }
 
     @Before
-    public void setUp() {
-        RestAssured.baseURI = restClient.getBaseUrl();
+    public void setBaseUrl() {
+        commonMethods.setBaseUrl();
     }
 
     @Test
     @DisplayName("Тест регистрации нового пользователя")
     public void newUserRegisterTest() {
         body = regBodies.get(0);
-        response = getUserRegister(body);
-        checkValidResponseBody(response);
-        checkStatusCode(response, 200);
+        response = step.getUserRegister(body);
+        step.checkStatusCode(response, 200);
+        step.checkRegisterValidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
     @Test
@@ -54,92 +47,49 @@ public class UserRegisterTest {
     public void existingUserRegisterTest() {
         body = regBodies.get(1);
         body = regBodies.get(1);
-        response = getUserRegister(body);
-        checkInvalidResponseBody(response, body);
-        checkStatusCode(response, 403);
+        response = step.getUserRegister(body);
+        step.checkStatusCode(response, 403);
+        step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
     @Test
     @DisplayName("Тест регистрации нового пользователя без email")
     public void noEmailRegisterTest() {
         body = regBodies.get(2);
-        response = getUserRegister(body);
-        checkInvalidResponseBody(response, body);
-        checkStatusCode(response, 403);
+        response = step.getUserRegister(body);
+        step.checkStatusCode(response, 403);
+        step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
     @Test
     @DisplayName("Тест регистрации нового пользователя без пароля")
     public void noPasswordRegisterTest() {
         body = regBodies.get(3);
-        response = getUserRegister(body);
-        checkInvalidResponseBody(response, body);
-        checkStatusCode(response, 403);
+        response = step.getUserRegister(body);
+        step.checkStatusCode(response, 403);
+        step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
     @Test
     @DisplayName("Тест регистрации нового пользователя без без имени")
     public void noNameRegisterTest() {
         body = regBodies.get(4);
-        response = getUserRegister(body);
-        checkInvalidResponseBody(response, body);
-        checkStatusCode(response, 403);
+        response = step.getUserRegister(body);
+        step.checkStatusCode(response, 403);
+        step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
 
     @After
     public void cleanUp() {
-        uda.cleanUp(token);
-    }
-
-
-    @Step("Вызван метод регистрации нового пользователя")
-    public Response getUserRegister(UserRegisterBody regBody) {
-        response =
-                given()
-                        .header("Content-type", "application/json")
-                        .and()
-                        .body(regBody)
-                        .when()
-                        .post(restClient.getUserRegister());
-        return response;
-    }
-
-    @Step("В ответе получен ожидаемый статус-код")
-    public void checkStatusCode(Response response, int statusCode) {
-        response.then().statusCode(statusCode);
-    }
-
-    @Step("Получено ожидаемое тело ответа при успешном создании нового пользователя")
-    public void checkValidResponseBody(Response response) {
-        response.then().assertThat()
-                .body("success", equalTo(true))
-                .body("user.email", equalTo(body.getEmail()))
-                .body("user.name", equalTo(body.getName()))
-                .body("accessToken", startsWith("Bearer"))
-                .body("refreshToken", instanceOf(String.class));
-
-        responseBody = response.body().as(UserResponseBody.class);
-        token = responseBody.getAccessToken();
-
-    }
-
-    @Step("Получено ожидаемое тело ответа при попытке регистрации пользователя с некорректными данными")
-    public void checkInvalidResponseBody(Response response, UserRegisterBody body) {
-        if (!(body.getEmail() == null)
-                && !(body.getPassword() == null)
-                && !(body.getName() == null)) {
-            response.then().assertThat()
-                    .body("success", equalTo(false))
-                    .body("message", equalTo("User already exists"));
-        } else
-            if (body.getEmail() == null
-                || body.getPassword() == null
-                || body.getName() == null) {
-            response.then().assertThat()
-                    .body("success", equalTo(false))
-                    .body("message", equalTo("Email, password and name are required fields"));
-        }
-            token = null;
+        commonMethods.cleanUp(accessToken);
     }
 }

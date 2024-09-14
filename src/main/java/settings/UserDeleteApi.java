@@ -1,15 +1,15 @@
 package settings;
 
 import static io.restassured.RestAssured.given;
+import static settings.RestClient.*;
 
 public class UserDeleteApi {
-    private RestClient restClient = new RestClient();
-    public void cleanUp(String bearerToken) {
-        if (bearerToken != null) {
+    public void cleanUp(String accessToken) {
+        if (accessToken != null) {
             given()
-                    .header("Authorization", bearerToken)
+                    .header("Authorization", accessToken)
                     .when()
-                    .delete(restClient.getUserUpdate());
+                    .delete(USER_UPDATE);
         } else {
             System.out.println("Удалять нечего");
         }
