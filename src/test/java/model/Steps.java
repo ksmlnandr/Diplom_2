@@ -3,6 +3,7 @@ package model;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
+import settings.UserLoginBody;
 import settings.UserRegisterBody;
 import settings.UserResponseBody;
 
@@ -72,5 +73,35 @@ public class Steps {
                     .body("success", equalTo(false))
                     .body("message", equalTo("Email, password and name are required fields"));
         }
+    }
+
+    //шаги для тестов на авторизацию пользователя
+    @Step("Вызван метод авторизации пользователя")
+    public Response getUserAuth(UserLoginBody loginBody) {
+        response =
+                given()
+                        .header("Content-type", "application/json")
+                        .and()
+                        .body(loginBody)
+                        .when()
+                        .post(USER_AUTH);
+        return response;
+    }
+
+    @Step("Получено ожидаемое тело ответа при успешной авторизации пользователя")
+    public void checkAuthValidResponseBody(Response response, UserLoginBody loginBody, UserRegisterBody regBody) {
+        response.then().assertThat()
+                .body("success", equalTo(true))
+                .body("user.email", equalTo(loginBody.getEmail()))
+                .body("user.name", equalTo(regBody.getName()))
+                .body("accessToken", startsWith("Bearer"))
+                .body("refreshToken", instanceOf(String.class));
+    }
+
+    @Step("Получено ожидаемое тело ответа при попытке авторизации пользователя с некорректными данными")
+    public void checkAuthInvalidResponseBody(Response response) {
+        response.then().assertThat()
+                .body("success", equalTo(false))
+                .body("message", equalTo("email or password are incorrect"));
     }
 }
