@@ -66,6 +66,6 @@ public class UserLoginTest {
 
     @After
     public void cleanUp() {
-        uda.cleanUp(accessToken);
+        commonMethods.cleanUp(accessToken);
     }
 }
