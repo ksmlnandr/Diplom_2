@@ -14,7 +14,6 @@ public class UserLoginTest {
     private Steps step = new Steps();
     private CommonMethods commonMethods = new CommonMethods();
     private Response response;
-    private UserDeleteApi uda = new UserDeleteApi();
     private String accessToken;
     UserRegisterBody regBody = new UserRegisterBody("new@user.com", "12345", "New User");
     private UserLoginBody loginBody;
@@ -66,6 +65,6 @@ public class UserLoginTest {
 
     @After
     public void cleanUp() {
-        uda.cleanUp(accessToken);
+        commonMethods.cleanUp(accessToken);
     }
 }
