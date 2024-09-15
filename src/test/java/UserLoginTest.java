@@ -15,7 +15,7 @@ public class UserLoginTest {
     private CommonMethods commonMethods = new CommonMethods();
     private Response response;
     private String accessToken;
-    UserRegisterBody regBody = new UserRegisterBody("new@user.com", "12345", "New User");
+    UserRegisterBody regBody = new UserRegisterBody(String.format("%s@user.com", step.getRandomUser()), "12345", step.getRandomUser());
     private UserLoginBody loginBody;
     private List<UserLoginBody> loginBodies = new ArrayList<>();
     public UserLoginTest() {
@@ -48,8 +48,6 @@ public class UserLoginTest {
         response = step.getUserAuth(loginBody);
         step.checkStatusCode(response, 401);
         step.checkAuthInvalidResponseBody(response);
-
-        accessToken = step.getAccessToken(response);
     }
 
     @Test
@@ -59,8 +57,6 @@ public class UserLoginTest {
         response = step.getUserAuth(loginBody);
         step.checkStatusCode(response, 401);
         step.checkAuthInvalidResponseBody(response);
-
-        accessToken = step.getAccessToken(response);
     }
 
     @After

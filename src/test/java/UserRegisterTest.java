@@ -3,7 +3,6 @@ import io.restassured.response.Response;
 import model.CommonMethods;
 import model.Steps;
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import settings.UserRegisterBody;
 
@@ -19,15 +18,15 @@ public class UserRegisterTest {
     private List<UserRegisterBody> regBodies = new ArrayList<>();
 
     public UserRegisterTest() {
-        regBodies.add(new UserRegisterBody("new21@user.ru", "12345", "New User"));
-        regBodies.add(new UserRegisterBody("existing1@user.ru", "12345", "Existing User"));
-        regBodies.add(new UserRegisterBody(null, "123456", "NoEmail User"));
-        regBodies.add(new UserRegisterBody("nopassword@user.ru", null, "NoPassword User"));
-        regBodies.add(new UserRegisterBody("noname@user.ru", "123456", null));
+        regBodies.add(new UserRegisterBody(String.format("%s@user.ru", step.getRandomUser()), "12345", step.getRandomUser()));
+        regBodies.add(new UserRegisterBody(String.format("%s@user.ru", step.getRandomUser()), "12345", step.getRandomUser()));
+        regBodies.add(new UserRegisterBody(null, "123456", step.getRandomUser()));
+        regBodies.add(new UserRegisterBody(String.format("%s@user.ru", step.getRandomUser()), null, step.getRandomUser()));
+        regBodies.add(new UserRegisterBody(String.format("%s@user.ru", step.getRandomUser()), "123456", null));
     }
 
-    @Before
-    public void setBaseUrl() {
+
+    public void setUrl() {
         commonMethods.setBaseUrl();
     }
 
@@ -50,8 +49,6 @@ public class UserRegisterTest {
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
         step.checkRegisterInvalidResponseBody(response, body);
-
-        accessToken = step.getAccessToken(response);
     }
 
     @Test
@@ -61,8 +58,6 @@ public class UserRegisterTest {
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
         step.checkRegisterInvalidResponseBody(response, body);
-
-        accessToken = step.getAccessToken(response);
     }
 
     @Test
@@ -72,8 +67,6 @@ public class UserRegisterTest {
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
         step.checkRegisterInvalidResponseBody(response, body);
-
-        accessToken = step.getAccessToken(response);
     }
 
     @Test
@@ -83,8 +76,6 @@ public class UserRegisterTest {
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
         step.checkRegisterInvalidResponseBody(response, body);
-
-        accessToken = step.getAccessToken(response);
     }
 
 

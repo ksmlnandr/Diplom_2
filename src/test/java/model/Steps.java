@@ -3,12 +3,11 @@ package model;
 
 import io.qameta.allure.Step;
 import io.restassured.response.Response;
-import settings.OrderCreateBody;
-import settings.UserLoginBody;
-import settings.UserRegisterBody;
-import settings.UserResponseBody;
+import settings.*;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import static settings.RestClient.*;
 import static io.restassured.RestAssured.given;
@@ -18,6 +17,11 @@ import static org.hamcrest.Matchers.equalTo;
 public class Steps {
     private Response response;
     private String accessToken;
+    private Random random = new Random();
+    public String getRandomUser() {
+        String randomUser = String.format("test_user_%d", random.nextInt());
+        return randomUser;
+    }
 
     //общий шаг для всех тестов
     @Step("В ответе получен ожидаемый статус-код")
@@ -171,4 +175,66 @@ public class Steps {
                 .body("success", equalTo(false))
                 .body("message", equalTo("Ingredient ids must be provided"));
     }
+
+    //шаги для тестов на получение списка заказов
+    @Step("Вызван метод получения списка заказов авторизованного пользователя")
+    public Response getOrderListByAuthUser() {
+        response =
+                given()
+                        .header("Content-type", "application/json")
+                        .header("Authorization", accessToken)
+                        .when()
+                        .get(ORDERS_ENDPOINT);
+        return response;
+    }
+
+    @Step("Вызван метод получения списка заказов без авторизации")
+    public Response getOrderListByNoAuth() {
+        response =
+                given()
+                        .header("Content-type", "application/json")
+                        .when()
+                        .get(ORDERS_ENDPOINT);
+        return response;
+    }
+
+    @Step("В ответе получено ожидаемое тело ответа при успешном получении списка заказов авторизованного пользователя")
+    public void checkOrderListValidResponseBody(Response response) {
+        response.then().assertThat()
+                .body("success", equalTo(true))
+                .body("orders.ingredients", instanceOf(ArrayList.class))
+                .body("orders._id", instanceOf(ArrayList.class))
+                .body("orders.status", instanceOf(ArrayList.class))
+                .body("orders.createdAt", instanceOf(ArrayList.class))
+                .body("orders.updatedAt", instanceOf(ArrayList.class))
+                .body("orders.number", instanceOf(ArrayList.class))
+                .body("total", instanceOf(Integer.class))
+                .body("totalToday", instanceOf(Integer.class));
+    }
+
+    @Step("Получено ожидаемое тело ответа при попытке получения списка заказов без авторизации")
+    public void checkOrderListInvalidResponseBody(Response response) {
+        response.then().assertThat()
+                .body("success", equalTo(false))
+                .body("message", equalTo("You should be authorised"));
+    }
+
+    @Step("Получен id ингредиента")
+    public String getIngredientId() {
+
+        response =
+                given()
+                        .header("Content-type", "application/json")
+                        .when()
+                        .get(INGREDIENTS_ENDPOINT);
+
+        List<Ingredient> ingredients = (response.body().as(IngredientsListResponseBody.class)).getData();
+
+        int randomIngredient = random.nextInt(ingredients.size());
+
+        String id = ingredients.get(randomIngredient).get_id();
+
+        return id;
+    }
+
 }

@@ -1,113 +1,52 @@
-import io.qameta.allure.Step;
 import io.qameta.allure.junit4.DisplayName;
-import io.restassured.RestAssured;
 import io.restassured.response.Response;
+import model.CommonMethods;
+import model.Steps;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import settings.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.*;
 
 public class GetOrderByUserTest {
-    private RestClient restClient = new RestClient();
-    private Response response;
-    private UserRegisterBody urb = new UserRegisterBody("new4@user.ru", "12345", "New User");
-    private UserRegisterTest urt = new UserRegisterTest();
-    private UserResponseBody responseBody;
-    private UserDeleteApi uda = new UserDeleteApi();
-    private String accessToken;
-    private OrderCreationTest oct = new OrderCreationTest();
-    private OrderCreateBody ocb;
-    private List<OrderCreateBody> orderCreateBodies = new ArrayList<OrderCreateBody>();
 
-    public GetOrderByUserTest() {
-        orderCreateBodies.add(new OrderCreateBody(new String[] {"61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa70"}));
-        orderCreateBodies.add(new OrderCreateBody(new String[] {"61c0c5a71d1f82001bdaaa6c", "61c0c5a71d1f82001bdaaa6e"}));
-    }
+    private CommonMethods commonMethods = new CommonMethods();
+    private Steps step = new Steps();
+    private Response response;
+    private UserRegisterBody regBody = new UserRegisterBody(String.format("%s@user.ru", step.getRandomUser()), "12345", step.getRandomUser());
+    private String accessToken;
+    private OrderCreateBody orderCreateBody;
 
     @Before
     public void setUp() {
-        RestAssured.baseURI = restClient.getBaseUrl();
+        commonMethods.setBaseUrl();
+        response = step.getUserRegister(regBody);
+        accessToken = step.getAccessToken(response);
 
-        response = urt.getUserRegister(urb);
-        responseBody = response.body().as(UserResponseBody.class);
-        accessToken = responseBody.getAccessToken();
+        orderCreateBody = new OrderCreateBody(new String[] {step.getIngredientId(), step.getIngredientId(), step.getIngredientId()});
 
-        oct.postCreateOrderWithAuth(orderCreateBodies.get(0), accessToken);
-        oct.postCreateOrderWithAuth(orderCreateBodies.get(1), accessToken);
+        step.postCreateOrderWithAuth(orderCreateBody, accessToken);
+        step.postCreateOrderWithAuth(orderCreateBody, accessToken);
     }
 
     @Test
     @DisplayName("Тест получения списка заказов пользователя, если пользователь авторизован")
     public void getOrderListByAuthUserTest() {
-        response = getOrderListByAuthUser();
-        checkStatusCode(response, 200);
-        checkValidResponseBody(response);
+        response = step.getOrderListByAuthUser();
+        step.checkStatusCode(response, 200);
+        step.checkOrderListValidResponseBody(response);
     }
 
     @Test
     @DisplayName("Тест получения списка заказов пользователя без авторизации")
     public void getOrderListByNoAuthTest() {
-        response = getOrderListByNoAuth();
-        checkStatusCode(response, 401);
-        checkInvalidResponseBody(response);
+        response = step.getOrderListByNoAuth();
+        step.checkStatusCode(response, 401);
+        step.checkOrderListInvalidResponseBody(response);
     }
 
     @After
     public void cleanUp() {
-        uda.cleanUp(accessToken);
+        commonMethods.cleanUp(accessToken);
     }
-
-    @Step("Вызван метод получения списка заказов авторизованного пользователя")
-    public Response getOrderListByAuthUser() {
-        response =
-                given()
-                        .header("Content-type", "application/json")
-                        .header("Authorization", accessToken)
-                        .when()
-                        .get(restClient.getOrdersEndpoint());
-        return response;
-    }
-
-    @Step("Вызван метод получения списка заказов без авторизации")
-    public Response getOrderListByNoAuth() {
-        response =
-                given()
-                        .header("Content-type", "application/json")
-                        .when()
-                        .get(restClient.getOrdersEndpoint());
-        return response;
-    }
-
-    @Step("В ответе получен ожидаемый статус-код")
-    public void checkStatusCode(Response response, int statusCode) {
-        response.then().statusCode(statusCode);
-    }
-
-    @Step("В ответе получено ожидаемое тело ответа при успешном получении списка заказов авторизованного пользователя")
-    public void checkValidResponseBody(Response response) {
-        response.then().assertThat()
-                .body("success", equalTo(true))
-                .body("orders.ingredients", instanceOf(ArrayList.class))
-                .body("orders._id", instanceOf(ArrayList.class))
-                .body("orders.status", instanceOf(ArrayList.class))
-                .body("orders.createdAt", instanceOf(ArrayList.class))
-                .body("orders.updatedAt", instanceOf(ArrayList.class))
-                .body("orders.number", instanceOf(ArrayList.class))
-                .body("total", instanceOf(Integer.class))
-                .body("totalToday", instanceOf(Integer.class));
-    }
-
-    @Step("Получено ожидаемое тело ответа при попытке получения списка заказов без авторизации")
-    public void checkInvalidResponseBody(Response response) {
-        response.then().assertThat()
-                .body("success", equalTo(false))
-                .body("message", equalTo("You should be authorised"));
-    }
-
 }

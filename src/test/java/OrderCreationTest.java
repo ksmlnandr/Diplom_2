@@ -14,12 +14,12 @@ public class OrderCreationTest {
     private CommonMethods commonMethods = new CommonMethods();
     private Steps step = new Steps();
     private Response response;
-    private UserRegisterBody regBody = new UserRegisterBody("new3@user.ru", "12345", "New User");
+    private UserRegisterBody regBody = new UserRegisterBody(String.format("%s@user.com", step.getRandomUser()), "12345", step.getRandomUser());
     private String accessToken;
     private OrderCreateBody orderCreateBody;
     private List<OrderCreateBody> orderCreateBodies = new ArrayList<OrderCreateBody>();
     public OrderCreationTest() {
-        orderCreateBodies.add(new OrderCreateBody(new String[] {"61c0c5a71d1f82001bdaaa6d", "61c0c5a71d1f82001bdaaa70"}));
+        orderCreateBodies.add(new OrderCreateBody(new String[] {step.getIngredientId(), step.getIngredientId(), step.getIngredientId()}));
         orderCreateBodies.add(new OrderCreateBody(new String[] {}));
         orderCreateBodies.add(new OrderCreateBody(new String[] {"incorrectIngredient1", "incorrectIngredient2"}));
     }
@@ -27,7 +27,6 @@ public class OrderCreationTest {
     @Before
     public void setUp() {
         commonMethods.setBaseUrl();
-
         response = step.getUserRegister(regBody);
         accessToken = step.getAccessToken(response);
     }
