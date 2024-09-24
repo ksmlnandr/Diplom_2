@@ -1,0 +1,141 @@
+{
+  "uid" : "6388f86330844ebb",
+  "name" : "Тест авторизации существующего пользователя с неверным email",
+  "fullName" : "UserLoginTest.userInvalidEmailAuthTest",
+  "historyId" : "e8c103c95889bc14ccf153f53ce67a3",
+  "time" : {
+    "start" : 1727206706777,
+    "stop" : 1727206708150,
+    "duration" : 1373
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Вызван метод регистрации нового пользователя",
+      "time" : {
+        "start" : 1727206706778,
+        "stop" : 1727206707165,
+        "duration" : 387
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "regBody",
+        "value" : "settings.UserRegisterBody@413e8246"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Вызван метод авторизации пользователя",
+      "time" : {
+        "start" : 1727206707165,
+        "stop" : 1727206707479,
+        "duration" : 314
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "loginBody",
+        "value" : "settings.UserLoginBody@4a15d5f5"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "В ответе получен ожидаемый статус-код",
+      "time" : {
+        "start" : 1727206707481,
+        "stop" : 1727206707486,
+        "duration" : 5
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@15096b0e"
+      }, {
+        "name" : "statusCode",
+        "value" : "401"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Получено ожидаемое тело ответа при попытке авторизации пользователя с некорректными данными",
+      "time" : {
+        "start" : 1727206707487,
+        "stop" : 1727206707588,
+        "duration" : 101
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@15096b0e"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : true,
+    "stepsCount" : 4,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : ""
+  }, {
+    "name" : "testClass",
+    "value" : "UserLoginTest"
+  }, {
+    "name" : "testMethod",
+    "value" : "userInvalidEmailAuthTest"
+  }, {
+    "name" : "suite",
+    "value" : "UserLoginTest"
+  }, {
+    "name" : "host",
+    "value" : "MacBook-Pro-Andrej.local"
+  }, {
+    "name" : "thread",
+    "value" : "38598@MacBook-Pro-Andrej.local.main(1)"
+  }, {
+    "name" : "framework",
+    "value" : "junit4"
+  }, {
+    "name" : "language",
+    "value" : "java"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "6388f86330844ebb.json",
+  "parameterValues" : [ ]
+}

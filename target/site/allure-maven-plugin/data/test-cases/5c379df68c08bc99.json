@@ -1,0 +1,126 @@
+{
+  "uid" : "5c379df68c08bc99",
+  "name" : "Тест регистрации нового пользователя без пароля",
+  "fullName" : "UserRegisterTest.noPasswordRegisterTest",
+  "historyId" : "76792b398a4ed63b07400ba21d6556a",
+  "time" : {
+    "start" : 1727206737947,
+    "stop" : 1727206738259,
+    "duration" : 312
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Вызван метод регистрации нового пользователя",
+      "time" : {
+        "start" : 1727206737948,
+        "stop" : 1727206738216,
+        "duration" : 268
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "regBody",
+        "value" : "settings.UserRegisterBody@5d260659"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "В ответе получен ожидаемый статус-код",
+      "time" : {
+        "start" : 1727206738216,
+        "stop" : 1727206738217,
+        "duration" : 1
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@359ae83a"
+      }, {
+        "name" : "statusCode",
+        "value" : "403"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Получено ожидаемое тело ответа при попытке регистрации пользователя с некорректными данными",
+      "time" : {
+        "start" : 1727206738217,
+        "stop" : 1727206738256,
+        "duration" : 39
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@359ae83a"
+      }, {
+        "name" : "userRegisterBody",
+        "value" : "settings.UserRegisterBody@5d260659"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : true,
+    "stepsCount" : 3,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : ""
+  }, {
+    "name" : "testClass",
+    "value" : "UserRegisterTest"
+  }, {
+    "name" : "testMethod",
+    "value" : "noPasswordRegisterTest"
+  }, {
+    "name" : "suite",
+    "value" : "UserRegisterTest"
+  }, {
+    "name" : "host",
+    "value" : "MacBook-Pro-Andrej.local"
+  }, {
+    "name" : "thread",
+    "value" : "38598@MacBook-Pro-Andrej.local.main(1)"
+  }, {
+    "name" : "framework",
+    "value" : "junit4"
+  }, {
+    "name" : "language",
+    "value" : "java"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "5c379df68c08bc99.json",
+  "parameterValues" : [ ]
+}
