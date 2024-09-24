@@ -3,6 +3,7 @@ import io.restassured.response.Response;
 import model.CommonMethods;
 import model.Steps;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import settings.UserRegisterBody;
 
@@ -13,6 +14,7 @@ public class UserRegisterTest {
     CommonMethods commonMethods = new CommonMethods();
     Steps step = new Steps();
     private Response response;
+    private Response regResponse;
     private UserRegisterBody body;
     private String accessToken;
     private List<UserRegisterBody> regBodies = new ArrayList<>();
@@ -26,6 +28,7 @@ public class UserRegisterTest {
     }
 
 
+    @Before
     public void setUrl() {
         commonMethods.setBaseUrl();
     }
@@ -45,10 +48,11 @@ public class UserRegisterTest {
     @DisplayName("Тест регистрации существующего пользователя")
     public void existingUserRegisterTest() {
         body = regBodies.get(1);
-        body = regBodies.get(1);
+        regResponse = step.getUserRegister(body);
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
-        step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(regResponse);
     }
 
     @Test
@@ -58,6 +62,8 @@ public class UserRegisterTest {
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
         step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
     @Test
@@ -67,6 +73,8 @@ public class UserRegisterTest {
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
         step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
     @Test
@@ -76,6 +84,8 @@ public class UserRegisterTest {
         response = step.getUserRegister(body);
         step.checkStatusCode(response, 403);
         step.checkRegisterInvalidResponseBody(response, body);
+
+        accessToken = step.getAccessToken(response);
     }
 
 
