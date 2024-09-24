@@ -1,0 +1,189 @@
+{
+  "uid" : "984cbc7b631d3a3a",
+  "name" : "Тест создания заказа с авторизацией",
+  "fullName" : "OrderCreationTest.createOrderWithAuthTest",
+  "historyId" : "1f223072d685a5f527f48c9694b7d74c",
+  "time" : {
+    "start" : 1727206723192,
+    "stop" : 1727206727613,
+    "duration" : 4421
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Получен id ингредиента",
+      "time" : {
+        "start" : 1727206723193,
+        "stop" : 1727206723513,
+        "duration" : 320
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "hasContent" : false,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Получен id ингредиента",
+      "time" : {
+        "start" : 1727206723514,
+        "stop" : 1727206723786,
+        "duration" : 272
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "hasContent" : false,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Получен id ингредиента",
+      "time" : {
+        "start" : 1727206723787,
+        "stop" : 1727206724154,
+        "duration" : 367
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ ],
+      "hasContent" : false,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Вызван метод регистрации нового пользователя",
+      "time" : {
+        "start" : 1727206724158,
+        "stop" : 1727206724563,
+        "duration" : 405
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "regBody",
+        "value" : "settings.UserRegisterBody@2c914aa3"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Вызван метод создания заказа с авторизацией",
+      "time" : {
+        "start" : 1727206724576,
+        "stop" : 1727206726179,
+        "duration" : 1603
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "orderCreateBody",
+        "value" : "settings.OrderCreateBody@780e6b63"
+      }, {
+        "name" : "accessToken",
+        "value" : "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY2ZjMxNTQ0OWVkMjgwMDAxYjRjMTA2YSIsImlhdCI6MTcyNzIwNjcyNCwiZXhwIjoxNzI3MjA3OTI0fQ.QXFZXZKKzX4enU-wao5r68PP4tuD_qUncN9SrGOAnbY"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "В ответе получен ожидаемый статус-код",
+      "time" : {
+        "start" : 1727206726180,
+        "stop" : 1727206726180,
+        "duration" : 0
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@19cee7ed"
+      }, {
+        "name" : "statusCode",
+        "value" : "200"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Получено ожидаемое тело ответа при успешном создании заказа без авторизации",
+      "time" : {
+        "start" : 1727206726182,
+        "stop" : 1727206726984,
+        "duration" : 802
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "response",
+        "value" : "io.restassured.internal.RestAssuredResponseImpl@19cee7ed"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : true,
+    "stepsCount" : 7,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ ],
+  "labels" : [ {
+    "name" : "package",
+    "value" : ""
+  }, {
+    "name" : "testClass",
+    "value" : "OrderCreationTest"
+  }, {
+    "name" : "testMethod",
+    "value" : "createOrderWithAuthTest"
+  }, {
+    "name" : "suite",
+    "value" : "OrderCreationTest"
+  }, {
+    "name" : "host",
+    "value" : "MacBook-Pro-Andrej.local"
+  }, {
+    "name" : "thread",
+    "value" : "38598@MacBook-Pro-Andrej.local.main(1)"
+  }, {
+    "name" : "framework",
+    "value" : "junit4"
+  }, {
+    "name" : "language",
+    "value" : "java"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "984cbc7b631d3a3a.json",
+  "parameterValues" : [ ]
+}
